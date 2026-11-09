@@ -1,6 +1,7 @@
 package driver
 
 import (
+	"maps"
 	"testing"
 
 	"go.gh.ink/smsutils/v3/internal/state"
@@ -19,9 +20,7 @@ func (t *TestDriver) NewClient(params model.DriverClientParam) (model.Client, er
 func TestRegister(t *testing.T) {
 	// Store original drivers
 	originalDrivers := make(map[string]model.Driver)
-	for k, v := range state.Drivers {
-		originalDrivers[k] = v
-	}
+	maps.Copy(originalDrivers, state.Drivers)
 
 	defer func() {
 		// Restore original drivers
@@ -70,9 +69,7 @@ func TestRegister(t *testing.T) {
 func TestRegisterMultipleDrivers(t *testing.T) {
 	// Store original drivers
 	originalDrivers := make(map[string]model.Driver)
-	for k, v := range state.Drivers {
-		originalDrivers[k] = v
-	}
+	maps.Copy(originalDrivers, state.Drivers)
 
 	defer func() {
 		// Restore original drivers
@@ -103,9 +100,7 @@ func TestRegisterMultipleDrivers(t *testing.T) {
 func TestRegisterReplaceDriver(t *testing.T) {
 	// Store original drivers
 	originalDrivers := make(map[string]model.Driver)
-	for k, v := range state.Drivers {
-		originalDrivers[k] = v
-	}
+	maps.Copy(originalDrivers, state.Drivers)
 
 	defer func() {
 		// Restore original drivers
@@ -138,9 +133,7 @@ func TestRegisterReplaceDriver(t *testing.T) {
 func TestRegisterEmptyName(t *testing.T) {
 	// Store original drivers
 	originalDrivers := make(map[string]model.Driver)
-	for k, v := range state.Drivers {
-		originalDrivers[k] = v
-	}
+	maps.Copy(originalDrivers, state.Drivers)
 
 	defer func() {
 		// Restore original drivers
@@ -155,4 +148,3 @@ func TestRegisterEmptyName(t *testing.T) {
 		t.Errorf("Empty name registration failed")
 	}
 }
-

@@ -86,10 +86,10 @@ func TestSmsutilsErrorWithDriverRequestID(t *testing.T) {
 
 func TestSmsutilsErrorWithDriverResponse(t *testing.T) {
 	err := New("test error")
-	response := map[string]interface{}{"status": "failed", "code": 500}
+	response := map[string]any{"status": "failed", "code": 500}
 	err = err.WithDriverResponse(response)
 
-	if respMap, ok := err.DriverResponse().(map[string]interface{}); !ok {
+	if respMap, ok := err.DriverResponse().(map[string]any); !ok {
 		t.Errorf("WithDriverResponse() type assertion failed")
 	} else {
 		if respMap["status"] != "failed" {

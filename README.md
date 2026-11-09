@@ -108,6 +108,17 @@ func main() {
 }
 ```
 
+## Context-aware sending
+
+Use `client.NewClientCtx(config, model.ClientOptions{Timeout: 5 * time.Second})`
+to obtain `model.ClientCtx` clients, then call
+`SendMessageCtx(ctx, dest, sender, template, vars)`. The options argument is optional.
+The existing `NewClient`, `model.Client`, `model.Driver` and `SendMessage` APIs remain available.
+
+See [CONTEXT.md](CONTEXT.md) for examples, driver contracts, cancellation semantics and
+local workspace testing before release. These additions require the updated core and
+matching driver source; dependency versions have intentionally not been changed yet.
+
 ## Core API
 
 ### `client.NewClient`
@@ -196,13 +207,15 @@ func init() {
 ## Errors
 
 The `errors` package provides `SmsutilsError`, a rich error type carrying provider context.
-Three sentinel errors are exported:
+The following sentinel errors are exported:
 
 | Sentinel | Meaning |
 |----------|---------|
 | `errors.ErrDriverNotRegistered` | Credentials referenced a driver that was not imported/registered |
 | `errors.ErrDriverCredentialInvalid` | Required credential fields were missing or empty |
-| `errors.ErrDriverSendFailed` | The provider returned a non-success response |
+| `errors.ErrDriverSendFailed` | The provider returned a non-success or malformed response |
+| `errors.ErrDriverContextUnsupported` | A registered driver does not support the context-aware factory |
+| `errors.ErrMessageInvalid` | Context or template variables are invalid |
 
 `SmsutilsError` supports `errors.Is` against these sentinels even after being decorated, and
 exposes provider diagnostics via chained `With*` builders / getters:

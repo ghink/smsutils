@@ -136,3 +136,7 @@ func New(c string, options ...Option) *SmsutilsError {
 var ErrDriverNotRegistered = New("driver not registered")
 var ErrDriverCredentialInvalid = New("driver credential invalid")
 var ErrDriverSendFailed = New("driver send failed")
+
+// ErrDriverContextUnsupported means a legacy driver cannot honor cancellation.
+var ErrDriverContextUnsupported = New("driver does not support context")
+var ErrMessageInvalid = New("invalid SMS message")
